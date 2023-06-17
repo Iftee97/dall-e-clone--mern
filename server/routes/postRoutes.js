@@ -16,7 +16,7 @@ cloudinary.config({
 // GET ALL POSTS
 router.get('/', async (req, res) => {
   try {
-    const posts = await Post.find({})
+    const posts = await Post.find({}).populate("creator")
     res.status(200).json({
       success: true,
       data: posts
@@ -31,14 +31,17 @@ router.get('/', async (req, res) => {
 
 // ADD NEW POST
 router.post('/', async (req, res) => {
+  const { name, prompt, photo, userId } = req.body
+  console.log({ name, prompt, userId })
+
   try {
-    const { name, prompt, photo } = req.body
     const photoUrl = await cloudinary.uploader.upload(photo)
 
     const newPost = await Post.create({
       name,
       prompt,
       photo: photoUrl.url,
+      creator: userId
     })
 
     res.status(200).json({
