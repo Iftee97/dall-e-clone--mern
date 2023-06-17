@@ -1,7 +1,7 @@
 import { download } from '../assets'
 import { downloadImage } from '../utils'
 
-export default function Card({ _id, name, prompt, photo }) {
+export default function Card({ _id, name, prompt, photo, creator }) {
   return (
     <div className="rounded-xl group relative shadow-card hover:shadow-cardhover card">
       <img
@@ -15,9 +15,17 @@ export default function Card({ _id, name, prompt, photo }) {
         </p>
         <div className="mt-5 flex justify-between items-center gap-2">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full object-cover bg-green-700 flex justify-center items-center text-white text-xs font-bold">
-              {name[0]}
-            </div>
+            {creator ? (
+              <img
+                src={creator.image}
+                alt="user avatar"
+                className="w-7 h-7 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-7 h-7 rounded-full object-cover bg-green-700 flex justify-center items-center text-white text-xs font-bold">
+                {name[0]}
+              </div>
+            )}
             <p className="text-white text-sm">
               {name}
             </p>

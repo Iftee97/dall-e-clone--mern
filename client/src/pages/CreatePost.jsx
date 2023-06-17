@@ -1,13 +1,13 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-
 import { preview } from "../assets"
 import { getRandomPrompt } from '../utils'
-
 import { FormField, Loader } from "../components"
+import { useUser } from "@clerk/clerk-react"
 
 export default function CreatePost() {
   const navigate = useNavigate()
+  const { isSignedIn, user } = useUser()
 
   const [form, setForm] = useState({
     name: '',
@@ -16,6 +16,27 @@ export default function CreatePost() {
   })
   const [generatingImg, setGeneratingImg] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [loggedInUserDbId, setLoggedInUserDbId] = useState(null)
+
+  useEffect(() => {
+    if (user) {
+      fetchUser()
+    }
+  }, [user])
+
+  async function fetchUser() {
+    const response = await fetch(`http://localhost:8080/api/user/get-logged-in-user?email=${user.emailAddresses[0].emailAddress}`)
+    const data = await response.json()
+    console.log('data: >>>>>>>', data)
+    setLoggedInUserDbId(data.data._id)
+  }
+
+  useEffect(() => {
+    setForm({
+      ...form,
+      name: user.fullName
+    })
+  }, [isSignedIn])
 
   async function generateImage() {
     if (form.prompt) {
@@ -26,7 +47,9 @@ export default function CreatePost() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ prompt: form.prompt })
+          body: JSON.stringify({
+            prompt: form.prompt,
+          })
         })
         const data = await response.json()
         console.log('data:', data)
@@ -49,7 +72,8 @@ export default function CreatePost() {
   async function handleSubmit(e) {
     e.preventDefault()
 
-    if (form.prompt && form.photo) {
+    if (form.prompt && form.photo && loggedInUserDbId) {
+      console.log('loggedInUserDbId: >>>>>>>>', loggedInUserDbId)
       setLoading(true)
       try {
         const response = await fetch('http://localhost:8080/api/v1/post', {
@@ -57,7 +81,10 @@ export default function CreatePost() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ ...form }),
+          body: JSON.stringify({
+            ...form,
+            userId: loggedInUserDbId
+          }),
         })
         await response.json()
         alert('Success')

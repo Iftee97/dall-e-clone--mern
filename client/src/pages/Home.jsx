@@ -1,10 +1,5 @@
 import { useState, useEffect } from "react"
-
-import {
-  Card,
-  FormField,
-  Loader
-} from '../components'
+import { Card, FormField, Loader} from '../components'
 
 function RenderCards({ data, title }) {
   if (data?.length > 0) {
@@ -39,6 +34,7 @@ export default function Home() {
         })
         if (response.ok) {
           const result = await response.json()
+          console.log('result: >>>>>>>>>>', result)
           setAllPosts(result.data.reverse())
         }
       } catch (error) {
@@ -92,7 +88,9 @@ export default function Home() {
           <>
             {searchText && (
               <h2 className="font-medium text-[#6666e75] text-xl mb-3">
-                Showing results for <span className="text-[#222328]">"{searchText}"</span>:
+                Showing results for <span className="text-[#222328]">
+                  "{searchText}"
+                </span>:
               </h2>
             )}
             <div className="grid lg:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-3">
