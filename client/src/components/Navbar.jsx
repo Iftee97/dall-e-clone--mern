@@ -11,11 +11,11 @@ export default function Navbar() {
 
   useEffect(() => {
     if (isSignedIn) {
-      login(user)
+      addLoggedInUserToDb(user)
     }
   }, [isSignedIn])
 
-  async function login(user) {
+  async function addLoggedInUserToDb(user) {
     const res = await fetch('http://localhost:8080/api/user/login', {
       method: 'POST',
       headers: {
@@ -29,9 +29,9 @@ export default function Navbar() {
     })
     console.log('backend login res: >>>>>>>>', res)
     if (res.ok) {
-      console.log('login success')
+      console.log('adding to db failed')
     } else {
-      alert('login failed. please try again.')
+      alert('please try again.')
       await signOut()
     }
   }
