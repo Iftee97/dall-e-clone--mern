@@ -12,6 +12,9 @@ const app = express()
 
 const port = process.env.PORT || 8080
 
+// connect to database
+connectDb(process.env.MONGODB_URL)
+
 app.use(cors())
 app.use(express.json({ limit: '50mb' }))
 
@@ -24,15 +27,19 @@ app.get('/', async (req, res) => {
   })
 })
 
-const startServer = () => {
-  try {
-    connectDb(process.env.MONGODB_URL)
-    app.listen(8080, () => {
-      console.log('Server running on port 8080')
-    })
-  } catch (error) {
-    console.log(error)
-  }
-}
+// const startServer = () => {
+//   try {
+//     connectDb(process.env.MONGODB_URL)
+//     app.listen(port, () => {
+//       console.log('Server running on port 8080')
+//     })
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
+// startServer()
 
-startServer()
+// start server
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`)
+})
