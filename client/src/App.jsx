@@ -1,7 +1,5 @@
 import { BrowserRouter, Link, Routes, Route } from 'react-router-dom'
-
 import { Home, CreatePost } from './pages'
-
 import { logo } from './assets'
 
 export default function App() {
