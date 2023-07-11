@@ -25,7 +25,7 @@ export default function CreatePost() {
   }, [user])
 
   async function fetchUser() {
-    const response = await fetch(`http://localhost:8080/api/user/get-logged-in-user?email=${user.emailAddresses[0].emailAddress}`)
+    const response = await fetch(`${import.meta.env.VITE_APP_DEV_BACKEND_SERVER_BASE_URL}/api/user/get-logged-in-user?email=${user.emailAddresses[0].emailAddress}`)
     const data = await response.json()
     console.log('data: >>>>>>>', data)
     setLoggedInUserDbId(data.data._id)
@@ -42,7 +42,7 @@ export default function CreatePost() {
     if (form.prompt) {
       try {
         setGeneratingImg(true)
-        const response = await fetch('http://localhost:8080/api/v1/dalle', {
+        const response = await fetch(`${import.meta.env.VITE_APP_DEV_BACKEND_SERVER_BASE_URL}/api/v1/dalle`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ export default function CreatePost() {
       console.log('loggedInUserDbId: >>>>>>>>', loggedInUserDbId)
       setLoading(true)
       try {
-        const response = await fetch('http://localhost:8080/api/v1/post', {
+        const response = await fetch(`${import.meta.env.VITE_APP_DEV_BACKEND_SERVER_BASE_URL}/api/v1/post`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

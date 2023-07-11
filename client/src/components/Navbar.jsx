@@ -16,7 +16,7 @@ export default function Navbar() {
   }, [isSignedIn])
 
   async function addLoggedInUserToDb(user) {
-    const res = await fetch('http://localhost:8080/api/user/login', {
+    const res = await fetch(`${import.meta.env.VITE_APP_DEV_BACKEND_SERVER_BASE_URL}/api/user/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,9 +29,10 @@ export default function Navbar() {
     })
     console.log('backend login res: >>>>>>>>', res)
     if (res.ok) {
-      console.log('adding to db failed')
+      const { data } = await res.json()
+      console.log(`${data.fullName} logged in successfully!`)
     } else {
-      alert('please try again.')
+      alert('could not sign in user. please try again.')
       await signOut()
     }
   }
@@ -66,7 +67,7 @@ export default function Navbar() {
               onClick={() => setShowPopover(!showPopover)}
             />
             {showPopover && (
-              <div className="bg-slate-100 p-3 rounded-md absolute top-[35px] right-[-75px] w-[150px]">
+              <div className="bg-slate-50 p-3 shadow-md rounded-md absolute top-[35px] right-[-75px] w-[150px]">
                 <div className="flex flex-col items-center gap-2">
                   <span className="text-sm text-blue-400 hover:text-blue-500">
                     {user?.fullName}
