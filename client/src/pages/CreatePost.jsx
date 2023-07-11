@@ -172,7 +172,10 @@ export default function CreatePost() {
             type="button"
             onClick={generateImage}
             disabled={generatingImg || loading}
-            className={`text-[#fff] bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center ${loading || generatingImg ? 'cursor-not-allowed' : ''}`}
+            className={`
+              text-[#fff] bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center 
+              ${loading || generatingImg ? 'cursor-not-allowed' : ''} 
+            `}
           >
             {generatingImg ? 'Generating...' : 'Generate Image'}
           </button>
@@ -185,7 +188,10 @@ export default function CreatePost() {
           <button
             type="submit"
             disabled={generatingImg || loading}
-            className={`mt-3 text-white bg-[#6469ff] font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center ${loading || generatingImg ? 'cursor-not-allowed' : ''}`}
+            className={`
+              mt-3 text-white bg-[#6469ff] font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center 
+              ${loading || generatingImg ? 'cursor-not-allowed' : ''}
+            `}
           >
             {loading ? 'Sharing...' : 'Share with the Community'}
           </button>
