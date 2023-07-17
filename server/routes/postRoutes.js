@@ -29,6 +29,22 @@ router.get('/', async (req, res) => {
   }
 })
 
+// GET LOGGED IN USER'S POSTS
+router.get('/user/:id', async (req, res) => {
+  try {
+    const posts = await Post.find({ creator: req.params.id })
+    res.status(200).json({
+      success: true,
+      data: posts
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Fetching posts failed, please try again'
+    })
+  }
+})
+
 // ADD NEW POST
 router.post('/', async (req, res) => {
   const { name, prompt, photo, userId } = req.body

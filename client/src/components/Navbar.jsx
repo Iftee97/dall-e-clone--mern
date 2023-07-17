@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { useUser, useClerk } from "@clerk/clerk-react"
 import { logo } from "../assets"
 
 export default function Navbar() {
   const [showPopover, setShowPopover] = useState(false)
+  const location = useLocation()
 
   const { signOut } = useClerk()
   const { isLoaded, isSignedIn, user } = useUser()
@@ -14,6 +15,10 @@ export default function Navbar() {
       addLoggedInUserToDb(user)
     }
   }, [isSignedIn])
+
+  useEffect(() => {
+    setShowPopover(false) // Hide popover on route change
+  }, [location])
 
   async function addLoggedInUserToDb(user) {
     const res = await fetch(`${import.meta.env.VITE_APP_DEV_BACKEND_SERVER_BASE_URL}/api/user/login`, {
@@ -63,20 +68,11 @@ export default function Navbar() {
             <img
               src={user?.imageUrl}
               alt="user avatar"
-              className="w-8 h-8 rounded-full cursor-pointer"
+              className="w-8 h-8 rounded-full cursor-pointer border border-blue-500"
               onClick={() => setShowPopover(!showPopover)}
             />
             {showPopover && (
-              <div className="bg-slate-50 p-3 shadow-md rounded-md absolute top-[35px] right-[-75px] w-[150px]">
-                <div className="flex flex-col items-center gap-2">
-                  <span className="text-sm text-blue-400 hover:text-blue-500">
-                    {user?.fullName}
-                  </span>
-                  <button className="text-sm text-red-500 hover:underline border-none" onClick={handleSignOut}>
-                    sign out
-                  </button>
-                </div>
-              </div>
+              <PopOver user={user} handleSignOut={handleSignOut} />
             )}
           </div>
           <Link to="/create-post" className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md">
@@ -90,5 +86,23 @@ export default function Navbar() {
         </Link>
       )}
     </header>
+  )
+}
+
+function PopOver({ handleSignOut }) {
+  return (
+    <div className="bg-slate-50 p-3 shadow-md rounded-md absolute top-[35px] right-[-75px] w-[150px]">
+      <div className="flex flex-col items-center gap-2">
+        <Link to='/profile' className="text-sm text-blue-400 hover:text-blue-500">
+          Profile
+        </Link>
+        <button
+          className="text-sm text-red-500 hover:underline border-none"
+          onClick={handleSignOut}
+        >
+          sign out
+        </button>
+      </div>
+    </div>
   )
 }

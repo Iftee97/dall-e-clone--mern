@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { Home, CreatePost, SignIn } from './pages'
+import { Home, CreatePost, SignIn, Profile } from './pages'
 import { Navbar } from './components'
 import { useUser } from '@clerk/clerk-react'
 
@@ -14,6 +14,8 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/create-post" element={isSignedIn ? <CreatePost /> : <Navigate to='/' />} />
           <Route path="/sign-in" element={isSignedIn ? <Navigate to='/' /> : <SignIn />} />
+          <Route path="/sign-up" element={<Navigate to='/sign-in' />} />
+          <Route path="/profile" element={isSignedIn ? <Profile /> : <Navigate to='/' />} />
         </Routes>
       </main>
     </BrowserRouter>
