@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { useUser, useClerk } from "@clerk/clerk-react"
+import { useUser, useClerk, UserButton } from "@clerk/clerk-react"
 import { logo } from "../assets"
 
 export default function Navbar() {
@@ -64,7 +64,7 @@ export default function Navbar() {
       )}
       {isLoaded && isSignedIn && (
         <div className="flex items-center gap-4">
-          <div className="relative">
+          {/* <div className="relative">
             <img
               src={user?.imageUrl}
               alt="user avatar"
@@ -74,7 +74,8 @@ export default function Navbar() {
             {showPopover && (
               <PopOver user={user} handleSignOut={handleSignOut} />
             )}
-          </div>
+          </div> */}
+          <UserButton afterSignOutUrl="/" />
           <Link to="/create-post" className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md">
             Create
           </Link>
