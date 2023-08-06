@@ -19,7 +19,7 @@ export default function CreatePost() {
     if (form.prompt) {
       try {
         setGeneratingImg(true)
-        const response = await fetch(`${import.meta.env.VITE_APP_PROD_BACKEND_SERVER_BASE_URL}/api/v1/dalle`, {
+        const response = await fetch(`${import.meta.env.VITE_APP_DEV_BACKEND_SERVER_BASE_URL}/api/v1/dalle`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ export default function CreatePost() {
     if (form.prompt && form.photo) {
       setLoading(true)
       try {
-        const response = await fetch(`${import.meta.env.VITE_APP_PROD_BACKEND_SERVER_BASE_URL}/api/v1/post`, {
+        const response = await fetch(`${import.meta.env.VITE_APP_DEV_BACKEND_SERVER_BASE_URL}/api/v1/post`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
